@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="style.css">
-        <title>Мой пробный вебсайт</title>
+        <title>Валюта</title>
     </head>
     <body>
 
@@ -17,17 +17,17 @@
 
         <div class="navbar-collapse collapse" id="navbar">
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-                <a class="nav-link" id="nav-home" href="index.html">
-                  Главная
-                  <span class="sr-only">(current)</span>
-                </a>
+            <li class="nav-item">
+                <a class="nav-link" id="nav-home" href="index.html">Главная</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="nav-guess" href="guess.html">Угадайка</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" id="nav-currency" href="currency.html">Валюта</a>
+            <li class="nav-item active">
+                <a class="nav-link" id="nav-currency" href="currency.html">
+                  Валюта
+                  <span class="sr-only">(current)</span>
+                </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="nav-equity" href="equity.html">Капитал</a>
@@ -36,15 +36,14 @@
         </div>
       </nav>
 
+
       <main>
             <div class="jumbotron jumbotron-fluid">
               <div class="container">
-                  <div class="row  justify-content-center" id="content">
-                      <div class="col-sm-11 col-md-9 col-md-7">
-                        <h1 class="display-5 cursive">Привет! Это учебная версия сайта</h1>
-                        <p class="lead shadow p-3 mb-5 bg-white rounded">На этом сайте вы можете попробовать сыграть в мини игру угадай число или воспользоваться другими незамысловатыми сервисами, которые созданы в учебных целях.</p>
-                      </div>
-                  </div>
+                <h4 class="display-5" id="date">Курсы валют на dd-MM-yyyy</h4>
+                <div id="USD">Доллар США $ — 00,0000 руб.</div>
+                <div id="EUR">Евро € — 00,0000 руб.</div>
+
               </div>
             </div>
       </main>
@@ -52,5 +51,28 @@
       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+      <script>
+          function CBR_XML_Daily_Ru(rates) {
+            function trend(current, previous) {
+              if (current > previous) return ' ▲';
+              if (current < previous) return ' ▼';
+              return '';
+            }
+
+            var date = document.getElementById('date');
+            date.innerHTML = date.innerHTML.replace('dd-MM-yyyy', rates.Date.substr(0, 10));
+
+            var USDrate = rates.Valute.USD.Value.toFixed(4).replace('.', ',');
+            var USD = document.getElementById('USD');
+            USD.innerHTML = USD.innerHTML.replace('00,0000', USDrate);
+            USD.innerHTML += trend(rates.Valute.USD.Value, rates.Valute.USD.Previous);
+
+            var EURrate = rates.Valute.EUR.Value.toFixed(4).replace('.', ',');
+            var EUR = document.getElementById('EUR');
+            EUR.innerHTML = EUR.innerHTML.replace('00,0000', EURrate);
+            EUR.innerHTML += trend(rates.Valute.EUR.Value, rates.Valute.EUR.Previous);
+            }
+      </script>
+      <script src="https://www.cbr-xml-daily.ru/daily_jsonp.js" async></script>
     </body>
 </html>
